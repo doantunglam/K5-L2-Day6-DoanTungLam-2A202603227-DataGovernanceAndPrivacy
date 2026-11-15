@@ -7,9 +7,9 @@
   "input": "fixtures\\t08_deletion",
   "output": "out\\poc_reviewed",
   "pipeline": "src.pipeline",
-  "config_hash": "6cf1fab43594",
-  "git_sha": "1af063c",
-  "runtime_seconds": 0.4911,
+  "config_hash": "c20f75e6f365",
+  "git_sha": "3bdc17a",
+  "runtime_seconds": 0.5022,
   "stats": {
     "n_requests": 10,
     "n_artefacts": 212,

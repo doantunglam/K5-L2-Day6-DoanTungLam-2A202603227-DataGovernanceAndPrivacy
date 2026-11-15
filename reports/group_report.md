@@ -11,7 +11,7 @@
 | Group ID | G07 |
 | Challenge | T08 · Retention & Delete Request Simulator |
 | Thành viên + vai trò | Doãn Tùng Lâm — làm cá nhân (Lead/Integrator, policy, test, review, report, trình bày) |
-| Git URL | https://github.com/doantunglam/K5-Day6-L2-DataGovernanceAndPrivacy (nhánh `t08-work`) |
+| Git URL | https://github.com/doantunglam/K5-L2-Day6-DoanTungLam-2A202603227-DataGovernanceAndPrivacy (nhánh `t08-work`) |
 | Tag `demo-180m` (commit) | `a5cf9e8` — PoC, review, metric và báo cáo hoàn chỉnh (2026-11-14 17:32) |
 | Tag `final-24h` (commit) | commit cuối của nhánh `t08-work` (`git rev-parse final-24h`) |
 | Deadline (giờ VN) | 2026-11-15 12:00 |

@@ -2,7 +2,7 @@
   "status": "GO",
   "reason_code": "PLAN_EXECUTED_EXCEPTIONS_TRACKED",
   "reason": "all 62 exception pairs reviewed; 106 artefacts mock-deleted, residual 0; open items tracked with an owner (110 delete, 28 retain_legal_hold, 26 escalate)",
-  "owner": "Lam TherK (reviewer, đóng vai DPO)",
+  "owner": "Doan Tung Lam (reviewer)",
   "scope": "t08",
   "evidence": [
     "out\\poc_reviewed\\actions.csv",
@@ -24,6 +24,6 @@
     "tombstones_total": 106,
     "plan_sha256": "3c87b6cd655694c2ee8782d39f7460678fdfefdfaeccf64f758a7253281e1abf"
   },
-  "ts": "2026-11-14T10:31:38+00:00",
+  "ts": "2026-11-15T11:22:01+00:00",
   "canonical": "GO"
 }

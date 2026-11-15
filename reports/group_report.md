@@ -8,13 +8,13 @@
 
 | Mục | Giá trị |
 |---|---|
-| Group ID | G00 — **TODO: điền mã nhóm thật** (cũng sửa trong `configs/lab.yaml`) |
+| Group ID | G07 |
 | Challenge | T08 · Retention & Delete Request Simulator |
-| Thành viên + vai trò | 1. Lam TherK (Lead/Integrator, policy, test, review, report) · **TODO: bổ sung thành viên khác nếu có** |
+| Thành viên + vai trò | Doãn Tùng Lâm — làm cá nhân (Lead/Integrator, policy, test, review, report, trình bày) |
 | Git URL | https://github.com/doantunglam/K5-Day6-L2-DataGovernanceAndPrivacy (nhánh `t08-work`) |
-| Tag `demo-180m` (commit) | chưa tạo — xem lệnh ở mục 08 |
-| Tag `final-24h` (commit) | chưa tạo — xem lệnh ở mục 08 |
-| Deadline (giờ VN) | **TODO** |
+| Tag `demo-180m` (commit) | `a5cf9e8` — PoC, review, metric và báo cáo hoàn chỉnh (2026-11-14 17:32) |
+| Tag `final-24h` (commit) | commit cuối của nhánh `t08-work` (`git rev-parse final-24h`) |
+| Deadline (giờ VN) | 2026-11-15 12:00 |
 
 ## 01 · Problem statement
 
@@ -83,9 +83,9 @@ requests.json + data_graph.json
 
 ## 04 · Baseline vs PoC
 
-- **Baseline** (`src/baseline_t08.py`, commit `7ae6c80`): đúng mô tả trong đề — với mỗi yêu cầu, xóa một raw video có
+- **Baseline** (`src/baseline_t08.py`, commit `81b2ca3`): đúng mô tả trong đề — với mỗi yêu cầu, xóa một raw video có
   `filename` chứa `subject_id`; không tìm backup hay dữ liệu dẫn xuất, không kiểm tra ngoại lệ.
-- **PoC** (`src/pipeline.py` + `src/t08_policy.py` + `src/t08_mock_store.py`, commit `7ae6c80`; tham số trong
+- **PoC** (`src/pipeline.py` + `src/t08_policy.py` + `src/t08_mock_store.py`, commit `81b2ca3`; tham số trong
   `configs/lab.yaml`): lineage + 10 luật có thứ tự + hàng chờ người duyệt + xóa mock idempotent.
 - **Cùng input, cùng seed 42, cùng gold:** xác nhận. Cả hai cùng dùng hàm `load()` nên cùng qua bước kiểm sha256.
 
@@ -99,7 +99,7 @@ requests.json + data_graph.json
 | Exception handling accuracy | 0.0000 (0/48) | 1.0000 (48/48) | baseline = 0; higher |
 | Audit trace completeness | 1.0000 (10/10) | 1.0000 (164/164) | bằng nhau; higher |
 | Review@B | không có hàng chờ | 62 cặp vào hàng chờ | B = 100, không cắt bớt |
-| Runtime / 100 items | 0.9630 s | 0.2604 s | baseline chỉ có 10 dòng nên bị chi phối bởi thời gian khởi động; tổng thời gian chạy là 0.10 s so với 0.43 s |
+| Runtime / 100 items | 1.1090 s | 0.2614 s | baseline chỉ có 10 dòng nên bị chi phối bởi thời gian khởi động; tổng thời gian chạy là 0.11 s so với 0.43 s |
 
 Sau vòng người duyệt (`reports/metrics_poc_reviewed.json`): Completeness 1.0000 (110/110), False-delete 0, Exception accuracy
 1.0000 (48/48). Con số này phụ thuộc quyết định của người duyệt ở mục 07 và giả định A3.
@@ -110,7 +110,7 @@ Sau vòng người duyệt (`reports/metrics_poc_reviewed.json`): Completeness 1
   bỏ sót tính là chưa xóa. Dòng `delete` cho cặp ngoài gold tính là xóa nhầm.
 - **Gold set:** `reports/t08_selflabel.csv`, 158 cặp = toàn bộ cặp mà người yêu cầu có trong `subject_ids` (110 delete,
   28 retain_legal_hold, 20 escalate). Gán nhãn tay bằng danh sách id tường minh, **trước** lần chạy PoC đầu tiên: commit
-  `b8a9549` (17:15) đứng trước commit PoC `7ae6c80` (17:23). Không sửa nhãn sau đó.
+  `19bd700` (17:15) đứng trước commit PoC `81b2ca3` (17:23). Không sửa nhãn sau đó.
 - **Ngưỡng / budget:** không có ngưỡng số; B = 100; thứ tự luật đóng băng cùng lúc với gold.
 - **Độ bất định:** Wilson 95% CI — Completeness của PoC 0.863–0.963, của baseline 0.037–0.137; Exception accuracy của PoC
   0.926–1.000 (N = 48). Bất định lớn hơn nằm ở **nhãn**, không phải ở cỡ mẫu: gold do chính nhóm gán và dùng chung giả
@@ -180,18 +180,18 @@ sẽ có 8 lần xóa nhầm nếu S2 đúng — rủi ro này đến từ quy�
 
 | Request → artefact | Ngoại lệ | Người duyệt | Hành động cuối & log |
 |---|---|---|---|
-| DR-003, DR-004 → `a0067`, `a0070`; DR-006, DR-007 → `a0123`, `a0126` (8 cặp) | MULTI_SUBJECT_ALL_REQUESTED | Lam TherK | `edit` → **delete**; 8 entry `override:edit` |
-| DR-008 → `a0156` | NO_PERMISSION (vendor-x) | Lam TherK | giữ `escalate`: mở yêu cầu xóa với vendor |
-| DR-004 → `a0075`, `a0079`, `a0083` | UNKNOWN_ORIGIN | Lam TherK | giữ `escalate`: data steward truy nguồn |
-| DR-001 → `a0011`, `a0014`; DR-009 → `a0179`, `a0182` | MULTI_SUBJECT | Lam TherK | giữ `escalate`: che người yêu cầu, không xóa |
-| 9 yêu cầu → `a0211`, `a0212` (12 cặp) | PARTIAL_LEGAL_HOLD (export gộp) | Lam TherK | giữ `escalate`: dựng lại export |
-| DR-002, DR-005 → 26 artefact dẫn xuất | LEGAL_HOLD_INHERITED | Lam TherK | giữ `retain_legal_hold` theo A1 |
-| DR-002 → `a0043`; DR-005 → `a0099` | LEGAL_HOLD | Lam TherK | giữ `retain_legal_hold`, xóa khi hết hold |
-| DR-001 → `a0012`, `a0013`; DR-004 → `a0068`, `a0069`; DR-007 → `a0124`, `a0125` | DERIVED_OTHER_SUBJECT | Lam TherK | giữ `escalate`: không phải dữ liệu của người yêu cầu |
+| DR-003, DR-004 → `a0067`, `a0070`; DR-006, DR-007 → `a0123`, `a0126` (8 cặp) | MULTI_SUBJECT_ALL_REQUESTED | Doan Tung Lam | `edit` → **delete**; 8 entry `override:edit` |
+| DR-008 → `a0156` | NO_PERMISSION (vendor-x) | Doan Tung Lam | giữ `escalate`: mở yêu cầu xóa với vendor |
+| DR-004 → `a0075`, `a0079`, `a0083` | UNKNOWN_ORIGIN | Doan Tung Lam | giữ `escalate`: data steward truy nguồn |
+| DR-001 → `a0011`, `a0014`; DR-009 → `a0179`, `a0182` | MULTI_SUBJECT | Doan Tung Lam | giữ `escalate`: che người yêu cầu, không xóa |
+| 9 yêu cầu → `a0211`, `a0212` (12 cặp) | PARTIAL_LEGAL_HOLD (export gộp) | Doan Tung Lam | giữ `escalate`: dựng lại export |
+| DR-002, DR-005 → 26 artefact dẫn xuất | LEGAL_HOLD_INHERITED | Doan Tung Lam | giữ `retain_legal_hold` theo A1 |
+| DR-002 → `a0043`; DR-005 → `a0099` | LEGAL_HOLD | Doan Tung Lam | giữ `retain_legal_hold`, xóa khi hết hold |
+| DR-001 → `a0012`, `a0013`; DR-004 → `a0068`, `a0069`; DR-007 → `a0124`, `a0125` | DERIVED_OTHER_SUBJECT | Doan Tung Lam | giữ `escalate`: không phải dữ liệu của người yêu cầu |
 
 - **Decision:** lần chạy đầu `HOLD / EXCEPTIONS_PENDING_REVIEW` (62/62 chưa duyệt); sau review
   `GO / PLAN_EXECUTED_EXCEPTIONS_TRACKED` — 110 delete, 28 retain_legal_hold, 26 escalate; 106 artefact đã xóa mock, tồn dư 0.
-  Owner: Lam TherK. Lịch sử trong `reports/decision_log.csv`.
+  Owner: Doan Tung Lam. Lịch sử trong `reports/decision_log.csv`.
 - **Trạng thái từng yêu cầu** (`reports/evidence_t08/request_summary.csv`): chỉ DR-006 hoàn tất 100%; 9 yêu cầu còn lại ở
   trạng thái `PARTIAL_EXCEPTIONS_OPEN` và còn 21–30 ngày đến hạn (tính từ ngày nhận yêu cầu cuối cùng, 2026-11-10;
   đổi mốc bằng tham số `as_of`). GO ở đây nghĩa là "đợt xử lý chạy đúng và mọi việc còn mở
@@ -223,7 +223,7 @@ git push origin t08-work --follow-tags
 
 - **`pytest`:** 73 passed, 39 skipped (39 test bị skip đều cần `gt/` của giảng viên). Nhóm thêm 26 test: 14 test luật
   (`tests/test_t08_policy.py`) và 12 test E2E (`tests/test_t08_pipeline.py`), gồm cả ca thành công lẫn ca lỗi.
-- **Máy:** Windows 11 (10.0.26300), AMD64 Family 25 Model 97, Python 3.13.1 · git sha của các lần chạy: `1af063c`.
+- **Máy:** Windows 11 (10.0.26300), AMD64 Family 25 Model 97, Python 3.13.1 · git sha của các lần chạy: `d1370d2`.
 
 ## 09 · Limitations & ethics
 
@@ -251,8 +251,9 @@ git push origin t08-work --follow-tags
 
 | Học viên | Git author/email | Module / vai trò | Commit SHA | Trình bày? |
 |---|---|---|---|---|
-| Lam TherK | Lam TherK <dtlam122003@gmail.com> | Cấu hình, metric contract + gold, baseline, policy, pipeline, test, review, report | `619e058`, `b8a9549`, `7ae6c80`, `c67289e`, `1af063c` và commit report | **TODO** |
-| **TODO: thành viên khác** | | | | |
+| Doãn Tùng Lâm | doantunglam <doantunglam.work@gmail.com> (cùng một người với `Lam TherK <dtlam122003@gmail.com>`) | Cấu hình, metric contract + gold, baseline, policy, pipeline, test, review, report | `dacbf23`, `19bd700`, `81b2ca3`, `aab3ace`, `99145a2`, `a5cf9e8`, `d1370d2` | Có |
+
+Ghi chú về `git shortlog`: các commit T08 ngày 2026-11-14 có hai bản nội dung giống hệt nhau — một bản tác giả `Lam TherK` (`619e058`…`f317f96`, vào `main` qua PR #1) và một bản tác giả `doantunglam` trên `t08-work` — cả hai đều là của cùng một học viên. Commit của `Tin Duong` và `loversky02` là starter repo của giảng viên.
 
 Công cụ hỗ trợ: code và báo cáo được soạn cùng trợ lý AI (Claude Code); các commit có dòng `Co-Authored-By`.
 
@@ -260,8 +261,8 @@ Công cụ hỗ trợ: code và báo cáo được soạn cùng trợ lý AI (Cl
 
 | Nguồn | Ngày xem | Ý nghĩa với bài |
 |---|---|---|
-| GDPR, Điều 17 (quyền xóa) và 17(3) (ngoại lệ) — https://eur-lex.europa.eu/eli/reg/2016/679/oj | **TODO** (chưa mở được trong lúc làm bài) | Quyền xóa không tuyệt đối: không áp dụng khi phải giữ dữ liệu theo nghĩa vụ pháp lý hoặc để phục vụ khiếu kiện → căn cứ cho `retain_legal_hold`. |
-| GDPR, Điều 19 (thông báo cho bên nhận dữ liệu) — cùng link | **TODO** | Bên kiểm soát phải báo việc xóa cho các bên đã nhận dữ liệu → căn cứ để `escalate` bản sao ở `vendor-x` thay vì bỏ qua. |
+| GDPR, Điều 17 (quyền xóa) và 17(3)(b), 17(3)(e) (ngoại lệ) — văn bản chính thức https://eur-lex.europa.eu/eli/reg/2016/679/oj; bản đã đọc: https://gdpr-info.eu/art-17-gdpr/ | 2026-11-15 | Quyền xóa không tuyệt đối: không áp dụng khi xử lý là cần thiết để tuân thủ nghĩa vụ pháp lý (17(3)(b)) hoặc để xác lập, thực hiện, bảo vệ quyền trong khiếu kiện (17(3)(e)) → căn cứ cho `retain_legal_hold`. |
+| GDPR, Điều 19 (thông báo cho bên nhận dữ liệu) — https://gdpr-info.eu/art-19-gdpr/ | 2026-11-15 | Bên kiểm soát phải báo việc xóa (theo 17(1)) cho từng bên đã nhận dữ liệu, trừ khi không thể hoặc tốn công không tương xứng → căn cứ để `escalate` bản sao ở `vendor-x` thay vì bỏ qua. |
 | Data Cards Playbook — https://sites.research.google/datacardsplaybook/ | 2026-11-14 | Bộ công cụ ghi chép minh bạch về dataset; gợi ý việc ghi nguồn gốc và lineage ngay trong metadata, thứ mà pipeline này dựa vào. |
 | Luật 91/2025 và Nghị định 356/2025 (Việt Nam) — được dẫn trong `docs/tracks/T08.md` | chưa đọc văn bản gốc | Nhóm chỉ dùng nguyên tắc đề bài nêu: quyền xóa có ngoại lệ. Không trích điều khoản cụ thể. |
 
@@ -269,8 +270,8 @@ Công cụ hỗ trợ: code và báo cáo được soạn cùng trợ lý AI (Cl
 
 **Bảng 3 · Checklist chốt khi nộp**
 
-- [ ] Link repo và tag cuối cùng trong README; input mẫu không chứa PII thật. *(link đã có; tag chưa tạo)*
+- [x] Link repo và tag cuối cùng trong README; input mẫu không chứa PII thật.
 - [x] Đúng 1 lệnh run, 1 lệnh evaluate, 1 lệnh tests; không cần download khi chạy.
 - [x] Có baseline/PoC metrics, ≥1 failure case, reviewer evidence, decision log.
 - [x] Có license/source provenance, data splits, seed, offline environment, GT/eval N.
-- [ ] Mỗi thành viên có ≥1 commit thực chất và được nêu minh bạch trong bảng trên. *(mới có 1 thành viên)*
+- [x] Mỗi thành viên có ≥1 commit thực chất và được nêu minh bạch trong bảng trên. *(làm cá nhân)*

@@ -19,4 +19,4 @@ params:
   our_acl: data-platform # nhóm quyền của pipeline; artefact có acl khác -> escalate
   inherit_hold: true # artefact dẫn xuất hoàn toàn từ dữ liệu bị legal hold cũng được giữ
   include_derived_other_subject: true # con cháu không gắn tên người yêu cầu -> escalate để người kiểm tra
-  budget: 100 # review budget B: mọi cặp ngoại lệ đều phải có người duyệt
+  budget: 100 # review budget B: mọi cặp ngoại lệ đều phải có người duyệt.

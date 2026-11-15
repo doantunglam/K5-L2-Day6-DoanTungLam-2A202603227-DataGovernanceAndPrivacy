@@ -8,7 +8,7 @@
   "output": "out\\poc_reviewed",
   "pipeline": "src.pipeline",
   "config_hash": "c20f75e6f365",
-  "git_sha": "d1370d2",
+  "git_sha": "3bdc17a",
   "runtime_seconds": 0.5022,
   "stats": {
     "n_requests": 10,

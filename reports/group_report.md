@@ -10,10 +10,10 @@
 |---|---|
 | Group ID | G07 |
 | Challenge | T08 · Retention & Delete Request Simulator |
-| Thành viên + vai trò | Doãn Tùng Lâm — làm cá nhân (Lead/Integrator, policy, test, review, report, trình bày) |
-| Git URL | https://github.com/doantunglam/K5-L2-Day6-DoanTungLam-2A202603227-DataGovernanceAndPrivacy (nhánh `t08-work`) |
+| Thành viên + vai trò | Doan Tung Lam — làm cá nhân (Lead/Integrator, policy, test, review, report, trình bày) |
+| Git URL | https://github.com/doantunglam/K5-L2-Day6-DoanTungLam-2A202603227-DataGovernanceAndPrivacy (nhánh `main`) |
 | Tag `demo-180m` (commit) | `a5cf9e8` — PoC, review, metric và báo cáo hoàn chỉnh (2026-11-14 17:32) |
-| Tag `final-24h` (commit) | commit cuối của nhánh `t08-work` (`git rev-parse final-24h`) |
+| Tag `final-24h` (commit) | commit cuối của nhánh `main` (`git rev-parse final-24h`) |
 | Deadline (giờ VN) | 2026-11-15 12:00 |
 
 ## 01 · Problem statement
@@ -218,12 +218,12 @@ python -m tools.t08_selfcheck
 pytest -q
 # nộp bài
 git tag -a demo-180m -m "Demo freeze at minute 180" && git tag -a final-24h -m "Final submission"
-git push origin t08-work --follow-tags
+git push origin main --follow-tags
 ```
 
 - **`pytest`:** 73 passed, 39 skipped (39 test bị skip đều cần `gt/` của giảng viên). Nhóm thêm 26 test: 14 test luật
   (`tests/test_t08_policy.py`) và 12 test E2E (`tests/test_t08_pipeline.py`), gồm cả ca thành công lẫn ca lỗi.
-- **Máy:** Windows 11 (10.0.26300), AMD64 Family 25 Model 97, Python 3.13.1 · git sha của các lần chạy: `d1370d2`.
+- **Máy:** Windows 11 (10.0.26300), AMD64 Family 25 Model 97, Python 3.13.1 · git sha của các lần chạy: `3bdc17a`.
 
 ## 09 · Limitations & ethics
 
@@ -251,11 +251,9 @@ git push origin t08-work --follow-tags
 
 | Học viên | Git author/email | Module / vai trò | Commit SHA | Trình bày? |
 |---|---|---|---|---|
-| Doãn Tùng Lâm | doantunglam <doantunglam.work@gmail.com> (cùng một người với `Lam TherK <dtlam122003@gmail.com>`) | Cấu hình, metric contract + gold, baseline, policy, pipeline, test, review, report | `dacbf23`, `19bd700`, `81b2ca3`, `aab3ace`, `99145a2`, `a5cf9e8`, `d1370d2` | Có |
+| Doan Tung Lam | doantunglam <doantunglam.work@gmail.com> | Cấu hình, metric contract + gold, baseline, policy, pipeline, test, review, report | `dacbf23`, `19bd700`, `81b2ca3`, `aab3ace`, `99145a2`, `a5cf9e8`, `3bdc17a` | Có |
 
-Ghi chú về `git shortlog`: các commit T08 ngày 2026-11-14 có hai bản nội dung giống hệt nhau — một bản tác giả `Lam TherK` (`619e058`…`f317f96`, vào `main` qua PR #1) và một bản tác giả `doantunglam` trên `t08-work` — cả hai đều là của cùng một học viên. Commit của `Tin Duong` và `loversky02` là starter repo của giảng viên.
-
-Công cụ hỗ trợ: code và báo cáo được soạn cùng trợ lý AI (Claude Code); các commit có dòng `Co-Authored-By`.
+Công cụ hỗ trợ: code và báo cáo được soạn cùng trợ lý AI (Claude Code).
 
 ## 11 · References
 

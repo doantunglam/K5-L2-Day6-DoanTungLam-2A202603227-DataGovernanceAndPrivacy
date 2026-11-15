@@ -1,7 +1,7 @@
 # Day 06 · Data Lab · Field-to-Release PoC (AI20K · Data Track)
 
 > **Bài nộp của nhóm — Track T08 · Retention & Delete Request Simulator**
-> Repo: https://github.com/doantunglam/K5-L2-Day6-DoanTungLam-2A202603227-DataGovernanceAndPrivacy · nhánh `t08-work` · tag `demo-180m`, `final-24h`
+> Repo: https://github.com/doantunglam/K5-L2-Day6-DoanTungLam-2A202603227-DataGovernanceAndPrivacy · nhánh `main` · tag `demo-180m`, `final-24h`
 > Báo cáo: [reports/group_report.md](reports/group_report.md) · Metric contract: [reports/metric_contract.md](reports/metric_contract.md) ·
 > Tự kiểm: [reports/t08_selfcheck.md](reports/t08_selfcheck.md) · Kịch bản demo: [demo/demo_script.md](demo/demo_script.md)
 > Chạy PoC: `python -m src.main --config configs/lab.yaml --track t08 --output out/poc --run-name poc --offline --seed 42`

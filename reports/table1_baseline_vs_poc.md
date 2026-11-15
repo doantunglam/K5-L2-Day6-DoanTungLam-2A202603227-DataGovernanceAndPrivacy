@@ -1,4 +1,4 @@
-Baseline: `baseline` (git d1370d2, seed 42) · PoC: `poc` (git d1370d2, seed 42)
+Baseline: `baseline` (git 3bdc17a, seed 42) · PoC: `poc` (git 3bdc17a, seed 42)
 
 | Metric (unit) | Slice | Baseline | PoC | Δ abs | Δ rel | Better | N |
 |---|---|---|---|---|---|---|---|

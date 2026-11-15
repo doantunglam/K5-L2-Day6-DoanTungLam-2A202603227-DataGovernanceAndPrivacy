@@ -2,7 +2,7 @@
 # Group config — EDIT ME (one per group). Values here override
 # the track defaults loaded from `track_config`.
 # ============================================================
-group_id: G-07 # TODO: đổi thành mã nhóm thật (G + 2 chữ số)
+group_id: G07 # mã nhóm (G + 2 chữ số)
 owner: "Doan Tung Lam (reviewer)" # mandatory for every Decision
 track_config: tracks/t08.yaml # pick your challenge: tracks/t01.yaml ... tracks/t14.yaml
 track: t08 # must match track_config
